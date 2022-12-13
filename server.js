@@ -3,8 +3,54 @@ import * as http from 'http';
 
 
 http.createServer((request, response) => {
-  response.writeHead(200, {'Content-Type': 'text/plain'});
+  response.writeHead(200, { 'Content-type': 'text/plain' }); // 200 = 'OK'
   response.end('Hello Node!\n');
-}).listen(8080);
+}).listen("8080")
 
-console.log('My first Node test server is running on Port 8080');
+console.log("Hello");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
