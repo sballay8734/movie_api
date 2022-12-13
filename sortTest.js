@@ -1,3 +1,24 @@
+// Try this! Owner as key, and the value is set to another object
+let teamList2 = [
+  {
+    "Shawn":
+    {
+      pointsFor: 1768,
+      wins: 12,
+      losses: 3,
+    }
+  },
+  {
+    "Donnie":
+    {
+      pointsFor: 1587,
+      wins: 5,
+      losses: 8,
+    }
+  }
+]
+
+
 
 let teamList = [
   {
