@@ -1,22 +1,24 @@
-let teamList = [
+let masterStatsList = [
   {
-    teamOwner: "Shawn",
-    pointsFor: 1768,
-    wins: 12,
+    manager: "shawnB",
+    pointsFor: 1648.94,
+    wins: 11,
     losses: 3,
-    record: teamList[0].wins + " / " + teamList[0].losses,
+    ties: 0,
   },
   {
-    teamOwner: "Donnie",
-    record: getRecord(),
-    pointsFor: 1668,
-    wins: 5,
-    losses: 9,
-  },
+    manager: "steveS",
+    pointsFor: 1804.00,
+    wins: 8,
+    losses: 6,
+    ties: 0,
+  }
 ]
 
-function getRecord(wins, losses) {
-  return (teamList[index].wins + " / " + teamList[index].losses)
-}
+let masterList2 = [];
 
-console.log(teamList[0].record)
+masterStatsList.forEach(item => {
+  if (item.manager == "shawnB") {
+    console.log(item)
+  }
+});

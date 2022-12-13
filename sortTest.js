@@ -1,44 +1,134 @@
-// Try this! Owner as key, and the value is set to another object
-let teamList2 = [
+
+
+let newVar = 12;
+shawnB.pointsFor += newVar;
+console.log(shawnB.pointsFor)
+
+
+let masterStats = (function () {
+  // MASTER STATS FOR EACH TEAM  *************************************************
+  let currentStandings = [];
+
+  let shawnB = {
+    pointsFor: 1648.94,
+    wins: 12,
+    losses: 3,
+    ties: 0,
+  }
+
+  let steveS = {
+    pointsFor: 1804.00,
+    wins: 8,
+    losses: 6,
+    ties: 0,
+  }
+
+  let DomN = {
+    pointsFor: 1733.62,
+    wins: 8,
+    losses: 6,
+    ties: 0,
+  }
+
+  let lloyd = {
+    pointsFor: 1659.44,
+    wins: 8,
+    losses: 6,
+    ties: 0,
+  }
+
+  let joeK = {
+    pointsFor: 1651.34,
+    wins: 7,
+    losses: 7,
+    ties: 0,
+  }
+
+  let codyZ = {
+    pointsFor: 1568.40,
+    wins: 7,
+    losses: 7,
+    ties: 0,
+  }
+
+  let flipp = {
+    pointsFor: 1598.46,
+    wins: 7,
+    losses: 7,
+    ties: 0,
+  }
+
+  let danG = {
+    pointsFor: 1661.46,
+    wins: 6,
+    losses: 8,
+    ties: 0,
+  }
+
+  let aaronM = {
+    pointsFor: 1622.72,
+    wins: 6,
+    losses: 8,
+    ties: 0,
+  }
+
+  let jimmyW = {
+    pointsFor: 1486.54,
+    wins: 6,
+    losses: 8,
+    ties: 0,
+  }
+
+  let danteN = {
+    pointsFor: 1675.76,
+    wins: 5,
+    losses: 9,
+    ties: 0,
+  }
+
+  let donI = {
+    pointsFor: 1567.62,
+    wins: 5,
+    losses: 9,
+    ties: 0,
+  }
+
+
+  // Functions *****************************************************************
+  function winPercentage(owner) {
+    return (owner.wins / (owner.wins + owner.losses + owner.ties)).toFixed(3);
+  }
+
+  return {
+    shawnB: shawnB,
+    steveS: steveS,
+    winPercentage: winPercentage,
+  }
+
+})();
+
+// Might have something here
+let masterStatsList = [
   {
-    "Shawn":
-    {
-      pointsFor: 1768,
-      wins: 12,
-      losses: 3,
-    }
+    manager: "shawnB",
+    pointsFor: 1648.94,
+    wins: 11,
+    losses: 3,
+    ties: 0,
   },
   {
-    "Donnie":
-    {
-      pointsFor: 1587,
-      wins: 5,
-      losses: 8,
-    }
+    manager: "steveS",
+    pointsFor: 1804.00,
+    wins: 8,
+    losses: 6,
+    ties: 0,
   }
 ]
 
+let masterList2 = [];
 
-
-let teamList = [
-  {
-    teamOwner: "Shawn",
-    pointsFor: 1768,
-    wins: 12,
-    losses: 3,
-    record: teamList[0].wins + " / " + teamList[0].losses, // how do you access keys of object inside itself?
-  },
-  {
-    teamOwner: "Donnie",
-    record: getRecord(),
-    pointsFor: 1668,
-    wins: 5,
-    losses: 9,
-  },
-]
-
-function getRecord(wins, losses) {
-  return (teamList[index].wins + " / " + teamList[index].losses)
-}
-
-console.log(teamList[0].record)
+masterStatsList.forEach(item => {
+  if (item.manager == "shawnB") {
+    console.log(item)
+  }
+});
