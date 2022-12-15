@@ -2,7 +2,7 @@
   "name": "movie_api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -19,6 +19,11 @@
   },
   "homepage": "https://github.com/sballay8734/movie_api#readme",
   "dependencies": {
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
     "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "eslint": "^8.29.0"
   }
 }
