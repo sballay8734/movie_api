@@ -37,3 +37,5 @@ for (const key in leagueMembers) {
 for (const key in leagueMembers) {
   console.log(key.pointsFor) // DOES NOT WORK (undefined) because each key is actually now coming from a list which has no values.
 }
+
+// TESTING
