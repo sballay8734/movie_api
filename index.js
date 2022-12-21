@@ -1,32 +1,39 @@
-const express = require('express');
-const app = express()
+const express = require('express'),
+  morgan = require('morgan');
 
-let myLogger = (req, res, next) => {
-  console.log(req.url);
-  next();
-};
+const app = express();
 
-let requestTime = (req, res, next) => {
-  req.requestTime = Date.now();
-  next();
-};
+let topTenMovies = [
+  "Movie One",
+  "Movie Two",
+  "Movie Three",
+  "Movie Four",
+  "Movie Five",
+  "Movie Six",
+  "Movie Seven",
+  "Movie Eight",
+  "Movie Nine",
+  "Movie Ten",
+];
 
-app.use(myLogger);
-app.use(requestTime);
-
-app.get('/', (req, res) => {
-  let responseText = 'Welcome to my app!';
-  responseText += '<small>Requested at: ' + req.requestTime + '</small>';
-  res.send(responseText);
+// use statements
+app.use(morgan('common'));
+app.use(express.static('public'));
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
-app.get('/secreturl', (req, res) => {
-  let responseText = 'This is a secret url with super top-secret content.';
-  responseText += '<small>Requested at: ' + req.requestTime + '</small>';
-  res.send(responseText);
+//get requests
+app.get('/', (req, res) => {
+  res.send('Welcome to my app!')
+});
 
+app.get('/movies', (req, res) => {
+  res.send({topTenMovies});
 });
 
 app.listen(8080, () => {
-  console.log('Your app is listening on port 8080.');
+  console.log('App listening on port 8080')
 });
+
