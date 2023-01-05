@@ -41,8 +41,7 @@ app.get('/students', (req, res) => {
 // Gets the data about a single student, by name
 
 app.get('/students/:name', (req, res) => {
-  res.json(students.find((student) =>
-    { return student.name === req.params.name }));
+  res.json(students.find((student) => { return student.name === req.params.name }));
 });
 
 // Adds data for a new student to our list of students.
