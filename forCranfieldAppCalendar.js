@@ -17,9 +17,10 @@
 
 // Cranfield WebApp logic!!
 
-// THIS IS IT!! @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// THIS IS IT But should do first and last name separate!! @@@@@@@@@@@@@@@@@@@@@
 let classList = [
   {
+    // Should do first and last name separate
     name: 'Shawn Ballay',
     track: 1,
     school: 'Turner Creek',

@@ -1,36 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Movie API</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="/public/css/style.css">
 </head>
+
 <body>
   <h1>Movie API</h1>
   <p>This project simply retrieves data from a custom build movie API and formats the responses in an easy to read and use format.</p>
   <div>
     <h3>Base URL</h3>
-    <p>www.something.com/</p>
+    <p>www.something.com</p>
   </div>
 
   <h2>URL Endpoints</h2>
-  <table>
+  <table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Logic</th>
+        <th scope="col">URL</th>
+        <th scope="col">HTTP Method</th>
+        <th scope="col">Request Body Data Format</th>
+        <th scope="col">Response Body Data Format</th>
+      </tr>
+    </thead>
     <tr>
-      <th>Logic</th>
-      <th>URL</th>
-      <th>HTTP Method</th>
-      <th>Request Body Data Format</th>
-      <th>Response Body Data Format</th>
-    </tr>
-    <tr>
-      <td>Get a list of movies</td>
-      <td>/movies</td>
+      <td>Return a list of all movies</td>
+      <td class="url">/movies</td>
       <td>GET</td>
       <td>None</td>
-      <td>A JSON object holding data about all the movies</td>
+      <td>A JSON object holding <strong>data about all movies</strong></td>
+    </tr>
+    <tr>
+      <td>Return description of a single movie</td>
+      <td class="url">/movies/[movieName]/description</td>
+      <td>GET</td>
+      <td>None</td>
+      <td>A string containing <strong>description of movie</strong></td>
+    </tr>
+    <tr>
+      <td>Return genre of a single movie</td>
+      <td class="url" class="url">/movies/[movieName]/genre</td>
+      <td>GET</td>
+      <td>None</td>
+      <td>A string containing <strong>genre</strong> of movie</td>
+    </tr>
+    <tr>
+      <td>Return description of a single movie</td>
+      <td class="url">/movies/[movieName]/director</td>
+      <td>GET</td>
+      <td>None</td>
+      <td>A string containing <strong>director</strong> of movie</td>
+    </tr>
+    <tr>
+      <td>Return film poster of a single movie</td>
+      <td class="url">/movies/[movieName]/image</td>
+      <td>GET</td>
+      <td>None</td>
+      <td>An image of movie film poster</td>
+    </tr>
+    <tr>
+      <td>Return description of given genre</td>
+      <td class="url">/[genre]</td>
+      <td>GET</td>
+      <td>None</td>
+      <td>A string containing <strong>description of genre</strong></td>
+    </tr>
+    <tr>
+      <td>Return description of director</td>
+      <td class="url">/[directorName]</td>
+      <td>GET</td>
+      <td>None</td>
+      <td>A string containing <strong>description of genre</strong></td>
+    </tr>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Logic</th>
+        <th scope="col">URL</th>
+        <th scope="col">HTTP Method</th>
+        <th scope="col">Request Body Data Format</th>
+        <th scope="col">Response Body Data Format</th>
+      </tr>
+    </thead>
+    <tr>
+      <td>Register a new user</td>
+      <td class="url">/register</td>
+      <td>POST</td>
+      <td>A JSON object holding data about new user</td>
+      <td>A JSON object holding data about the added user</strong></td>
+    </tr>
+    <tr>
+      <td>Update user info</td>
+      <td class="url">/[userName]/info</td>
+      <td>PUT</td>
+      <td>None</td>
+      <td>A text message indicating the change</strong></td>
+    </tr>
+    <tr>
+      <td>Add movie to favorites</td>
+      <td class="url">/[userName]/favorites</td>
+      <td>POST</td>
+      <td>A JSON object holding data about movie</td>
+      <td>A text message indicating the change</strong></td>
+    </tr>
+    <tr>
+      <td>Remove movie from favorites</td>
+      <td class="url">/[userName]/favorites</td>
+      <td>DELETE</td>
+      <td>A JSON object holding data about movie</td>
+      <td>A text message indicating the change</strong></td>
+    </tr>
+    <tr>
+      <td>Deregister account/Remove email</td>
+      <td class="url">/[userName]/deregister</td>
+      <td>DELETE</td>
+      <td>None</td>
+      <td>A text message indicating the change</strong></td>
     </tr>
   </table>
+
 
   <h2>Important Notes</h2>
   <ul>
@@ -39,6 +132,11 @@
     <li>list item 3</li>
     <li>list item 4</li>
   </ul>
-  
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
+
+</body>
+
 </html>
