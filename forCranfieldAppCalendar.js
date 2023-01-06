@@ -140,8 +140,8 @@ let masterStats = {
 }
 
 function calculateTotalWins(owner) {
-  value1 = masterStats.owner.twentySixteen;
-  value2 = masterStats.owner.twentySeventeen;
+  value1 = masterStats.owner.twentySixteen.wins;
+  value2 = masterStats.owner.twentySeventeen.wins;
 
   return value1 + value2;
 }
