@@ -30,6 +30,7 @@
       </tr>
     </thead>
     <tr>
+      <!-- List of all movies -->
       <td>Return a list of all movies</td>
       <td class="url">/movies</td>
       <td>GET</td>
@@ -37,43 +38,25 @@
       <td>A JSON object holding <strong>data about all movies</strong></td>
     </tr>
     <tr>
-      <td>Return description of a single movie</td>
-      <td class="url">/movies/[movieName]/description</td>
+      <!-- Movie Name -->
+      <td>Return data of a single movie</td>
+      <td class="url">/movies/[movieName]</td>
       <td>GET</td>
       <td>None</td>
       <td>A string containing <strong>description of movie</strong></td>
     </tr>
     <tr>
-      <td>Return genre of a single movie</td>
-      <td class="url" class="url">/movies/[movieName]/genres</td>
-      <td>GET</td>
-      <td>None</td>
-      <td>A string containing <strong>genre</strong> of movie</td>
-    </tr>
-    <tr>
-      <td>Return description of a single movie</td>
-      <td class="url">/movies/[movieName]/directors</td>
-      <td>GET</td>
-      <td>None</td>
-      <td>A string containing <strong>director</strong> of movie</td>
-    </tr>
-    <tr>
-      <td>Return film poster of a single movie</td>
-      <td class="url">/movies/[movieName]/image</td>
-      <td>GET</td>
-      <td>None</td>
-      <td>An image of movie film poster</td>
-    </tr>
-    <tr>
+      <!-- Genre Name -->
       <td>Return description of given genre</td>
-      <td class="url">/movies/genres/[genre]</td>
+      <td class="url">/movies/genres/[genreName]</td>
       <td>GET</td>
       <td>None</td>
       <td>A string containing <strong>description of genre</strong></td>
     </tr>
     <tr>
+      <!-- Director Name -->
       <td>Return description of director</td>
-      <td class="url">/movies/directors/[director]</td>
+      <td class="url">/movies/directors/[directorName]</td>
       <td>GET</td>
       <td>None</td>
       <td>A string containing <strong>description of genre</strong></td>
@@ -88,15 +71,17 @@
       </tr>
     </thead>
     <tr>
+      <!-- Register a new user -->
       <td>Register a new user</td>
-      <td class="url">/users/register</td>
+      <td class="url">/users</td>
       <td>POST</td>
       <td>A JSON object holding data about new user</td>
       <td>A JSON object holding data about the added user</strong></td>
     </tr>
     <tr>
+      <!-- Update user info -->
       <td>Update user info</td>
-      <td class="url">/users/[userName]/info</td>
+      <td class="url">/users/[id]</td>
       <td>PUT</td>
       <td>None</td>
       <td>A text message indicating the change</strong></td>
