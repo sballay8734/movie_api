@@ -118,18 +118,16 @@ classList.forEach((student) => {
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 // Testing objects
-let yearsList = [2016, 2017]
-
 let masterStats = {
   shawn: {
-    twentySixteen: 
+    2016: 
       {
         pft: 1409.38,
         pfa: 123.32,
         wins: 12,
         losses: 2
       },
-    twentySeventeen: 
+    2017: 
       {
         pft: 1449.38,
         pfa: 127.52,
@@ -137,14 +135,45 @@ let masterStats = {
         losses: 3
       },
   },
+  steve: {
+    2016: 
+      {
+        pft: 1409.38,
+        pfa: 123.32,
+        wins: 15,
+        losses: 0
+      },
+    2017: 
+      {
+        pft: 1449.38,
+        pfa: 127.52,
+        wins: 7,
+        losses: 8
+      },
+  },
 }
 
+// Not quite
 function calculateTotalWins(owner) {
-  value1 = masterStats.owner.twentySixteen.wins;
-  value2 = masterStats.owner.twentySeventeen.wins;
-
-  return value1 + value2;
+  let yearsList = [2016, 2017];
+  yearsList.forEach((year) => {
+    console.log(`${owner} ${year}: ${owner[year].wins}`);
+  })
 }
 
-console.log(calculateTotalWins(shawn));
+calculateTotalWins(masterStats.steve);
 
+
+// Below does not work
+// let fullOwnerList = ['shawn', 'steve'];
+
+// function getTotalWinsForAll(ownerList) {
+//   ownerList.forEach((owner) => {
+//     yearsList = [2016, 2017];
+//     yearsList.forEach((year) => {
+//       console.log(`${owner} ${year}: ${masterStats.owner[year].wins}`)
+//     })
+//   })
+// }
+
+// getTotalWinsForAll(fullOwnerList);

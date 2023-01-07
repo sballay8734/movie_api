@@ -45,14 +45,14 @@
     </tr>
     <tr>
       <td>Return genre of a single movie</td>
-      <td class="url" class="url">/movies/[movieName]/genre</td>
+      <td class="url" class="url">/movies/[movieName]/genres</td>
       <td>GET</td>
       <td>None</td>
       <td>A string containing <strong>genre</strong> of movie</td>
     </tr>
     <tr>
       <td>Return description of a single movie</td>
-      <td class="url">/movies/[movieName]/director</td>
+      <td class="url">/movies/[movieName]/directors</td>
       <td>GET</td>
       <td>None</td>
       <td>A string containing <strong>director</strong> of movie</td>
@@ -66,14 +66,14 @@
     </tr>
     <tr>
       <td>Return description of given genre</td>
-      <td class="url">/[genre]</td>
+      <td class="url">/movies/genres/[genre]</td>
       <td>GET</td>
       <td>None</td>
       <td>A string containing <strong>description of genre</strong></td>
     </tr>
     <tr>
       <td>Return description of director</td>
-      <td class="url">/[directorName]</td>
+      <td class="url">/movies/directors/[director]</td>
       <td>GET</td>
       <td>None</td>
       <td>A string containing <strong>description of genre</strong></td>
@@ -89,35 +89,35 @@
     </thead>
     <tr>
       <td>Register a new user</td>
-      <td class="url">/register</td>
+      <td class="url">/users/register</td>
       <td>POST</td>
       <td>A JSON object holding data about new user</td>
       <td>A JSON object holding data about the added user</strong></td>
     </tr>
     <tr>
       <td>Update user info</td>
-      <td class="url">/[userName]/info</td>
+      <td class="url">/users/[userName]/info</td>
       <td>PUT</td>
       <td>None</td>
       <td>A text message indicating the change</strong></td>
     </tr>
     <tr>
       <td>Add movie to favorites</td>
-      <td class="url">/[userName]/favorites</td>
+      <td class="url">/users/[userName]/favorites</td>
       <td>POST</td>
       <td>A JSON object holding data about movie</td>
       <td>A text message indicating the change</strong></td>
     </tr>
     <tr>
       <td>Remove movie from favorites</td>
-      <td class="url">/[userName]/favorites</td>
+      <td class="url">/users/[userName]/favorites</td>
       <td>DELETE</td>
       <td>A JSON object holding data about movie</td>
       <td>A text message indicating the change</strong></td>
     </tr>
     <tr>
       <td>Deregister account/Remove email</td>
-      <td class="url">/[userName]/deregister</td>
+      <td class="url">/users/[userName]/deregister</td>
       <td>DELETE</td>
       <td>None</td>
       <td>A text message indicating the change</strong></td>
