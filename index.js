@@ -124,15 +124,16 @@ app.post('/users', (req, res) => {
 
 // Updates user info (using user 'name' to test)
 app.put('/users/:id', (req, res) => {
-  let user = users.find((user) => { return user.id === req.params.id });
-  res.send(user);
+  let user = users.find((user) => { return user.id === parseInt(req.params.id) });
 
-  // if (userToChange) {
-  //   userToChange.name = req.params.name;
-  //   res.status(201).send(`User name was changed to ${req.params.name}.`); 
-  // } else {
-  //   res.status(404).send(`User with the name ${req.params.name} was not found.`)
-  // };
+  if (!req.body.name || !user) {
+    const message = 'Something went wrong.'
+    res.status(400).send(message)
+  } else {
+    user.name = req.body.name;
+    res.status(201).send(user);
+  }
+
 });
 
 // Add movie to list of favorites
@@ -158,27 +159,3 @@ app.delete('/users/:username/deregister', (req, res) => {
 app.listen(8080, () => {
   console.log('Your app is listening on port 8080');
 });
-
-
-
-// this works
-// let testObject = [
-//   {
-//     title: 'finding nemo',
-//     genres: ['animation', 'comedy', 'adventure']
-//   },
-//   {
-//     title: 'blah blah',
-//     genres: ['animation', 'horror', 'adventure']
-//   }
-// ]
-
-// let testGenre = 'horror';
-
-// let newList = [];
-// testObject.forEach((movie) => {
-//   if (movie.genres.includes(testGenre)) {
-//     newList.push(movie);
-//   }
-// })
-// console.log(newList)
