@@ -78,11 +78,7 @@ let users = [
 
 // Gets the list of data about ALL movies: WORKING
 app.get('/movies', (req, res) => {
-  let moviesList = [];
-  movies.forEach((movie) => {
-    moviesList.push(movie.title)
-  });
-  res.send(moviesList);
+  res.send(movies);
 });
 
 // Get a list of all movies that match a given name
@@ -95,7 +91,7 @@ app.get('/movies/genres/:genreName', (req, res) => {
   let movieByGenreList = [];
   movies.forEach((movie) => {
     if (movie.genres.includes(req.params.genreName)) {
-      movieByGenreList.push(movie.title);
+      movieByGenreList.push(movie);
     }
   });
   res.send(movieByGenreList);
