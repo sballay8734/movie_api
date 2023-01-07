@@ -35,7 +35,7 @@
       <td class="url">/movies</td>
       <td>GET</td>
       <td>None</td>
-      <td>A JSON object holding <strong>data about all movies</strong></td>
+      <td>A list of movie titles</td>
     </tr>
     <tr>
       <!-- Movie Name -->
@@ -43,7 +43,7 @@
       <td class="url">/movies/[movieName]</td>
       <td>GET</td>
       <td>None</td>
-      <td>A string containing <strong>description of movie</strong></td>
+      <td>A JSON object holding data about chosen movie</td>
     </tr>
     <tr>
       <!-- Genre Name -->
@@ -51,7 +51,7 @@
       <td class="url">/movies/genres/[genreName]</td>
       <td>GET</td>
       <td>None</td>
-      <td>A string containing <strong>description of genre</strong></td>
+      <td>A list of all movies containing selected genre</td>
     </tr>
     <tr>
       <!-- Director Name -->
@@ -59,7 +59,7 @@
       <td class="url">/movies/directors/[directorName]</td>
       <td>GET</td>
       <td>None</td>
-      <td>A string containing <strong>description of genre</strong></td>
+      <td>A JSON object containing director info</td>
     </tr>
     <thead class="thead-dark">
       <tr>
@@ -83,8 +83,8 @@
       <td>Update user info</td>
       <td class="url">/users/[id]</td>
       <td>PUT</td>
-      <td>None</td>
-      <td>A text message indicating the change</strong></td>
+      <td>A JSON object containing data to change</td>
+      <td>A JSON object containing changes made</strong></td>
     </tr>
     <tr>
       <td>Add movie to favorites</td>
