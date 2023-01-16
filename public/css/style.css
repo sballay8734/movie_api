@@ -9,3 +9,8 @@ body {
 .url {
   font-weight: bold;
 }
+
+.code {
+  font-size: 8px;
+  color: blue;
+}

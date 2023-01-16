@@ -29,37 +29,73 @@
         <th scope="col">Response Body Data Format</th>
       </tr>
     </thead>
+    <!-- List of all movies -->
     <tr>
-      <!-- List of all movies -->
       <td>Return a list of all movies</td>
       <td class="url">/movies</td>
       <td>GET</td>
       <td>None</td>
       <td>A list of movie objects</td>
     </tr>
+    <!-- Movie by Name -->
     <tr>
-      <!-- Movie Name -->
       <td>Return data of a single movie</td>
       <td class="url">/movies/[movieName]</td>
       <td>GET</td>
       <td>None</td>
-      <td>A JSON object holding data about chosen movie</td>
+      <td>A JSON object holding data about chosen movie.
+      <br>
+      <br>
+      <pre class="code">
+      {
+        "Genre": {
+            "Name": "Animation",
+            "Description": "Animation is ...
+        },
+        "Director": {
+            "Name": "Pete Docter",
+            "Bio": "Peter Hans Docter ...
+            "Birth": "1968",
+            "Death": null
+        },
+        "_id": "63c414d5134e611c3bf41b7b",
+        "Title": "Up",
+        "Description": "78-year-old Carl Fredricksen ...
+        "ImagePath": "up.png",
+        "Featured": false
+      }
+      </pre>
+      </td>
     </tr>
+    <!-- Genre Name -->
     <tr>
-      <!-- Genre Name -->
       <td>Return description of given genre</td>
       <td class="url">/movies/genres/[genreName]</td>
       <td>GET</td>
       <td>None</td>
-      <td>A list of all movies containing selected genre</td>
+      <td>A text response describing chosen genre.
+      <br>
+      <br>
+      <pre class="code">
+        "Thriller film, also known as ...
+      </pre>
+      </td>
     </tr>
+    <!-- Director Name -->
     <tr>
-      <!-- Director Name -->
       <td>Return description of director</td>
       <td class="url">/movies/directors/[directorName]</td>
       <td>GET</td>
       <td>None</td>
-      <td>A JSON object containing director info</td>
+      <td>A JSON object containing director info
+      <pre class="code">
+      <br>
+      {
+        "Name": "David Fincher",
+        "Bio": "David Fincher was born in ...
+      }
+      </pre>
+      </td>
     </tr>
     <thead class="thead-dark">
       <tr>
@@ -70,42 +106,125 @@
         <th scope="col">Response Body Data Format</th>
       </tr>
     </thead>
+    <!-- Register a new user -->
     <tr>
-      <!-- Register a new user -->
       <td>Register a new user</td>
       <td class="url">/users</td>
       <td>POST</td>
-      <td>A JSON object holding data about new user</td>
-      <td>A JSON object holding data about the added user</strong></td>
+      <td>A JSON object holding data about new user
+      <br>
+      <br>
+      <pre class="code">
+      {
+        "username": "asdfasdfasd",
+        "password": "djalksdjflk",
+        "email": "whatintheworld@gmail.com"
+      }
+      </pre>
+      </td>
+      <td>A JSON object holding data about the added user
+      <br>
+      <br>
+      <pre class="code">
+      {
+        "username": "asdfasdfasd",
+        "password": "djalksdjflk",
+        "email": "whatintheworld@gmail.com",
+        "favoriteMovies": [],
+        "_id": "63c5743c72e56771023296c6",
+        "__v": 0
+      }
+      </pre>
+      </td>
     </tr>
+    <!-- Update user info -->
     <tr>
-      <!-- Update user info -->
       <td>Update user info</td>
       <td class="url">/users/[username]</td>
       <td>PUT</td>
-      <td>A JSON object containing data to change</td>
-      <td>A JSON object containing changes made</strong></td>
+      <td>A JSON object containing data to change
+      <br>
+      <br>
+      <pre class="code">
+      {
+        "username": "asdfasdfasd",
+        "password": "fdadfahrs",
+        "email": "whatintheworldisthis@gmail.com"
+      }
+      </pre>
+      </td>
+      <td>A JSON object containing changes made
+      <br>
+      <br>
+      <pre class="code">
+      {
+        "_id": "63c5743c72e56771023296c6",
+        "username": "asdfasdfasd",
+        "password": "fdadfahrs",
+        "email": "whatintheworldisthis@gmail.com",
+        "favoriteMovies": [],
+        "__v": 0
+      }
+      </pre>
+      </td>
     </tr>
+    <!-- Add movie to favorites -->
     <tr>
       <td>Add movie to favorites</td>
       <td class="url">/users/[userName]/movies/[movieID]</td>
       <td>POST</td>
-      <td>A JSON object holding data about movie</td>
-      <td>A text message indicating the change</strong></td>
+      <td>None (movieID included as request parameter)</td>
+      <td>A JSON object indicating the change
+      <br>
+      <br>
+      <pre class="code">
+      {
+        "_id": "63c5743c72e56771023296c6",
+        "username": "asdfasdfasd",
+        "password": "fdadfahrs",
+        "email": "whatintheworldisthis@gmail.com",
+        "favoriteMovies": [
+            "63c419f6134e611c3bf41b81"
+        ],
+        "__v": 0
+      }
+      </pre>
+      </td>
     </tr>
+    <!-- Remove movie from favorites -->
     <tr>
       <td>Remove movie from favorites</td>
       <td class="url">/users/[userName]/movies/[movieID]</td>
       <td>DELETE</td>
-      <td>A JSON object holding data about movie</td>
-      <td>A text message indicating the change</strong></td>
+      <td>None (movieID included as request parameter)</td>
+      <td>A JSON object indicating the change
+      <br>
+      <br>
+      <pre class="code">
+      {
+        "_id": "63c5743c72e56771023296c6",
+        "username": "asdfasdfasd",
+        "password": "fdadfahrs",
+        "email": "whatintheworldisthis@gmail.com",
+        "favoriteMovies": [],
+        "__v": 0
+      }
+      </pre>
+      </td>
     </tr>
+    <!-- Delete user -->
     <tr>
       <td>Delete user</td>
       <td class="url">/users/[userName]</td>
       <td>DELETE</td>
-      <td>None</td>
-      <td>A text message indicating the change</strong></td>
+      <td>None (username included as request parameter)</td>
+      <td>A text message indicating the change
+      <br>
+      <br>
+      <pre class="code">
+        [username] was deleted ...
+      </pre>
+      </td>
     </tr>
   </table>
 
