@@ -81,28 +81,28 @@
     <tr>
       <!-- Update user info -->
       <td>Update user info</td>
-      <td class="url">/users/[id]</td>
+      <td class="url">/users/[username]</td>
       <td>PUT</td>
       <td>A JSON object containing data to change</td>
       <td>A JSON object containing changes made</strong></td>
     </tr>
     <tr>
       <td>Add movie to favorites</td>
-      <td class="url">/users/[userName]/favorites</td>
+      <td class="url">/users/[userName]/movies/[movieID]</td>
       <td>POST</td>
       <td>A JSON object holding data about movie</td>
       <td>A text message indicating the change</strong></td>
     </tr>
     <tr>
       <td>Remove movie from favorites</td>
-      <td class="url">/users/[userName]/favorites</td>
+      <td class="url">/users/[userName]/movies/[movieID]</td>
       <td>DELETE</td>
       <td>A JSON object holding data about movie</td>
       <td>A text message indicating the change</strong></td>
     </tr>
     <tr>
-      <td>Deregister account/Remove email</td>
-      <td class="url">/users/[userName]/deregister</td>
+      <td>Delete user</td>
+      <td class="url">/users/[userName]</td>
       <td>DELETE</td>
       <td>None</td>
       <td>A text message indicating the change</strong></td>

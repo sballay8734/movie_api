@@ -1,156 +1,226 @@
 const express = require('express'),
   bodyParser = require('body-parser'),
-  uuid = require('uuid');
+  uuid = require('uuid'),
+  mongoose = require('mongoose'),
+  Models = require('./models.js')
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+const Movies = Models.Movie;
+const Users = Models.User;
+
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(bodyParser.json());
 
-let movies = [
-  {
-    title: 'How to Train Your Dragon',
-    description: 'A hapless young Viking who aspires to hunt dragons becomes the unlikely friend of a young dragon himself, and learns there may be more to the creatures than he assumed.',
-    genres: ['animation', 'action', 'adventure'],
-    directors: ['Dean DeBlois', 'Chris Sanders'],
-    imgURL: 'Placeholder',
-  },
-  {
-    title: 'Finding Nemo',
-    description: 'After his son is captured in the Great Barrier Reef and taken to Sydney, a timid clownfish sets out on a journey to bring him home.',
-    genres: ['animation', 'adventure', 'comedy'],
-    directors: ['Andrew Stanton', 'Lee Unkrich'],
-    imgURL: 'Placeholder',
-  },
-  {
-    title: 'Glass Onion: A Knives Out Mystery',
-    description: 'Famed Southern detective Benoit Blanc travels to Greece for his latest case.',
-    genres: ['comedy', 'crime', 'drama'],
-    directors: 'Rian Johnson',
-    imgURL: 'Placeholder',
-  },
-  {
-    title: 'Finding Nemo',
-    description: 'This movie does not exist. It is just a duplicate title to test request functionality',
-    genres: ['horror', 'crime', 'drama'],
-    directors: ['Andrew Stanton', 'Lee Unkrich'],
-    imgURL: 'Placeholder',
-  },
-];
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-let directors = [
-  {
-    name: 'Dean DeBlois',
-    bio: 'Canadian film director, film producer, screenwriter, and animator. He is best known for writing and directing the Oscar-nominated animated films Lilo & Stitch for Walt Disney Animation Studios (with Chris Sanders), the How to Train Your Dragon film trilogy for DreamWorks Animation (the first film also with Sanders), and directing the documentary Heima about the Icelandic band Sigur Rós.',
-    birthYear: 1970,
-    deathYear: null,
-  },
-  {
-    name: 'Andrew Stanton',
-    bio: 'American filmmaker and voice actor based at Pixar, which he joined in 1990.[2] His film work includes co-writing and co-directing Pixar\'s A Bug\'s Life (1998), directing Finding Nemo (2003)[3] and the sequel Finding Dory (2016), WALL-E (2008), and the live-action film, Disney\'s John Carter (2012), and co-writing all four Toy Story films (1995-2019) and Monsters, Inc. (2001).',
-    birthYear: 1965,
-    deathYear: null,
-  },
-  {
-    name: 'Rian Johnson',
-    bio: 'American filmmaker. He made his directorial debut with the neo-noir mystery film Brick (2005), which received positive reviews and grossed nearly $4 million on a $450,000 budget. Transitioning to higher-profile films, Johnson achieved mainstream recognition for writing and directing the science-fiction thriller Looper (2012) to critical and commercial success. Johnson landed his largest project when he wrote and directed the space opera Star Wars: The Last Jedi (2017), which grossed over $1 billion. He returned to the mystery genre with Knives Out (2019), which earned him an Academy Award nomination for Best Original Screenplay, and its sequel, Glass Onion (2022).',
-    birthYear: 1973,
-    deathYear: null,
-  },
-]
-
-let users = [
-  {
-    name: 'testName',
-    email: 'testEmail',
-    id: 1
-  },
-  {
-    name: 'testName2',
-    email: 'testEmail2',
-    id: 2
-  },
-  {
-    name: 'testName3',
-    email: 'testEmail3',
-    id: 3
-  },
-];
-
-// Gets the list of data about ALL movies: WORKING
-app.get('/movies', (req, res) => {
-  res.send(movies);
+// Get all users
+app.get('/users', (req, res) => {
+  Users.find()
+    .then((users) => {
+      res.status(201).json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
-// Get a list of all movies that match a given name
-app.get('/movies/:movieTitle', (req, res) => {
-  res.json(movies.filter((movie) => { return movie.title.toLocaleLowerCase() === req.params.movieTitle.toLocaleLowerCase() }));
+// Get a user by username ------------------------------------------------------
+app.get('/users/:username', (req, res) => {
+  Users.findOne({ username: req.params.username })
+
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+
 });
 
-// Gets a list of all movies containing the same genre
-app.get('/movies/genres/:genreName', (req, res) => {
-  let movieByGenreList = [];
-  movies.forEach((movie) => {
-    if (movie.genres.includes(req.params.genreName)) {
-      movieByGenreList.push(movie);
-    }
+// update user info ------------------------------------------------------------
+app.put('/users/:username', (req, res) => {
+  Users.findOneAndUpdate(
+    { username: req.params.username },
+    {
+      $set:
+      {
+        // Leaving any of these fields out is still valid. Existing values will remain unchanged. So if you just wanted to update the username, you may do so by only providing a username in the req.body. All other fields will be untouched. 
+        // HOWEVER, if you leave req.body blank, it will delete everything.
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+        birthDate: req.body.birthDate,
+      }
+    },
+    { new: true }, // makes sure updated document is returned
+
+    // error handling & feedback
+  ).then((updatedUser) => {
+    res.json(updatedUser);
+  })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+
+});
+
+// add movies to user list of favorites ----------------------------------------
+app.post('/users/:username/movies/:movieID', (req, res) => {
+  Users.findOneAndUpdate(
+    { username: req.params.username },
+    { $addToSet: { favoriteMovies: req.params.movieID } },
+    { new: true },
+
+  ).then((updatedUser) => {
+    res.status(201).json(updatedUser);
+  }).catch((error) => {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
   });
-  res.send(movieByGenreList);
+
 });
 
-// Return object matching directors name
-app.get('/movies/directors/:directorName', (req, res) => {
-  res.json(directors.find((director) => {
-    { return director.name.toLocaleLowerCase() === req.params.directorName.toLocaleLowerCase() }
-  }));
+// remove movie from user list of favorites ------------------------------------
+app.delete('/users/:username/movies/:movieID', (req, res) => {
+  Users.findOneAndUpdate(
+    { username: req.params.username },
+    { $pull: { favoriteMovies: req.params.movieID } },
+    { new: true },
+
+  ).then((updatedUser) => {
+    res.status(201).json(updatedUser);
+  }).catch((error) => {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  });
+
 });
 
-// Registers a new user
+// Get all movies --------------------------------------------------------------
+app.get('/movies', (req, res) => {
+  Movies.find()
+
+    .then((movies) => {
+      res.status(201).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err)
+    });
+
+});
+
+// Get movie by name -----------------------------------------------------------
+app.get('/movies/:movieName', (req, res) => {
+  Movies.findOne(
+    { Title: req.params.movieName })
+
+    .then((movie) => {
+      if (!movie) {
+        res.status(400).send(req.params.movieName + ' could not be found.')
+      } else {
+        res.status(201).json(movie);
+      }
+    }).catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+
+});
+
+// Register new user -----------------------------------------------------------
 app.post('/users', (req, res) => {
-  let newUser = req.body;
+  // first check if username already exists
+  Users.findOne({ username: req.body.username })
 
-  if (!newUser.name) {
-    const message = 'Missing name in request body'
-    res.status(400).send(message)
-  } else {
-    newUser.id = uuid.v4();
-    users.push(newUser);
-    res.status(201).send(newUser);
-  }
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.username + ' already exists');
+      } else {
+        // create new user
+        Users.create({
+          username: req.body.username,
+          password: req.body.password,
+          email: req.body.email,
+          birthDate: req.body.birthDate,
+        })
+          // send feedback(response) back to client - contains status and object
+          .then((user) => { res.status(201).json(user) })
+          // catch error from create command
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error in create function: ' + error);
+          })
+      }
+    })
+    // catch error for post command
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+
 });
 
-// Updates user info (using user 'name' to test)
-app.put('/users/:id', (req, res) => {
-  let user = users.find((user) => { return user.id === parseInt(req.params.id) });
+// Delete a user by username ---------------------------------------------------
+app.delete('/users/:username', (req, res) => {
+  Users.findOneAndRemove(
+    { username: req.params.username })
 
-  if (!req.body.name || !user) {
-    const message = 'Something went wrong.'
-    res.status(400).send(message)
-  } else {
-    user.name = req.body.name;
-    res.status(201).send(user);
-  }
+    .then((user) => {
+      if (!user) {
+        res.status(400).send(req.params.username + ' was not found.');
+      } else {
+        res.status(201).send(req.params.username + ' was deleted.')
+      }
+    }).catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 
 });
 
-// Add movie to list of favorites
-app.post('/users/:username/favorites', (req, res) => {
-  res.send('Successful Endpoint: Add movie to favorites')
+// Get description of genre by name --------------------------------------------
+app.get('/movies/genres/:genreName', (req, res) => {
+  Movies.findOne(
+    { "Genre.Name": req.params.genreName })
+
+    .then((movie) => {
+      if (!movie) {
+        res.status(400).send(req.params.genreName + ' could not be found.');
+      } else {
+        res.status(201).json(movie.Genre.Description);
+      }
+    }).catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+
 });
 
-// Removes movie from list of favorites
-app.delete('/users/:username/favorites', (req, res) => {
-  res.send('Successful Endpoint: Remove movie from favorites')
+// Get description of director by name -----------------------------------------
+app.get('/movies/directors/:directorName', (req, res) => {
+  Movies.findOne(
+    { "Director.Name": req.params.directorName })
+
+    .then((movie) => {
+      if (!movie) {
+        res.status(400).send(req.params.directorName + ' could not be found.');
+      } else {
+        res.status(201).json(movie.Director);
+      }
+    }).catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+
 });
 
-// Deregister Account
-app.delete('/users/:username/deregister', (req, res) => {
-  res.send('Successful Endpoint: Deregister')
-});
-
-
-
-
-
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 app.listen(8080, () => {
   console.log('Your app is listening on port 8080');
