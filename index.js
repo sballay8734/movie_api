@@ -115,10 +115,10 @@ app.get('/movies', (req, res) => {
 
 });
 
-// Get movie by name -----------------------------------------------------------
+// Get movie by title ----------------------------------------------------------
 app.get('/movies/:movieName', (req, res) => {
   Movies.findOne(
-    { Title: req.params.movieName })
+    { title: req.params.movieName }).collation( { locale: "en", strength: 2 } )
 
     .then((movie) => {
       if (!movie) {
@@ -187,13 +187,13 @@ app.delete('/users/:username', (req, res) => {
 // Get description of genre by name --------------------------------------------
 app.get('/movies/genres/:genreName', (req, res) => {
   Movies.findOne(
-    { "Genre.Name": req.params.genreName })
+    { "genre.name": req.params.genreName }).collation( { locale: "en", strength: 2 } )
 
     .then((movie) => {
       if (!movie) {
         res.status(400).send(req.params.genreName + ' could not be found.');
       } else {
-        res.status(201).json(movie.Genre.Description);
+        res.status(201).json(movie.genre.description);
       }
     }).catch((error) => {
       console.error(error);
@@ -205,13 +205,13 @@ app.get('/movies/genres/:genreName', (req, res) => {
 // Get description of director by name -----------------------------------------
 app.get('/movies/directors/:directorName', (req, res) => {
   Movies.findOne(
-    { "Director.Name": req.params.directorName })
+    { "director.name": req.params.directorName }).collation( { locale: "en", strength: 2 } )
 
     .then((movie) => {
       if (!movie) {
         res.status(400).send(req.params.directorName + ' could not be found.');
       } else {
-        res.status(201).json(movie.Director);
+        res.status(201).json(movie.director);
       }
     }).catch((error) => {
       console.error(error);
