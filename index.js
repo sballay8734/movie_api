@@ -1,9 +1,12 @@
+// Imports *********************************************************************
 const express = require('express'),
   bodyParser = require('body-parser'),
   uuid = require('uuid'),
   mongoose = require('mongoose'),
-  Models = require('./models.js')
+  Models = require('./models.js'),
+  { check, validationResult } = require('express-validator')
 
+// Middleware ******************************************************************
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 const Movies = Models.Movie;
@@ -156,7 +159,10 @@ app.get('/movies/:movieName', passport.authenticate('jwt', { session: false }), 
 
 // Register new user -----------------------------------------------------------
 app.post('/users', (req, res) => {
-  // first check if username already exists
+  // hash password
+  let hashedPassword = Users.hashedPassword(req.body.Password);
+
+  // check if username already exists
   Users.findOne({ username: req.body.username })
 
     .then((user) => {
@@ -166,7 +172,7 @@ app.post('/users', (req, res) => {
         // create new user
         Users.create({
           username: req.body.username,
-          password: req.body.password,
+          password: hashedPassword,
           email: req.body.email,
           birthDate: req.body.birthDate,
         })

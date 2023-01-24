@@ -27,6 +27,16 @@ let userSchema = mongoose.Schema({
   favoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
 });
 
+// username & password hash
+userSchema.statics.hashPassword = (password) => {
+  return bcrypt.hashSync(password, 10)
+};
+
+userSchema.methods.validatePassword = function(password) {
+  return bcrypt.compareSync(password, this.password);
+};
+
+// exports
 let Movie = mongoose.model('Movie', movieSchema); // accessed as "movies"
 let User = mongoose.model('User', userSchema); // accessed as "users"
 
