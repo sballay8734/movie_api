@@ -28,7 +28,7 @@ app.use(cors({
       let message = 'The CORS policy for this application doesn\'t allow access from origin ' + origin;
       return callback(new Error(message), false);
     }
-    
+
     return callback(null, true);
   }
 }));
@@ -80,32 +80,39 @@ app.get('/users/:username', passport.authenticate('jwt', { session: false }), (r
 });
 
 // update user info ------------------------------------------------------------
-app.put('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate(
-    { username: req.params.username },
-    {
-      $set:
+app.put('/users/:username',
+  [
+    check('username', 'Username is required').isLength({ min: 5 }),
+    check('username', 'Username contains non-alphanumeric characters - Not Allowed').isAlphanumeric(),
+    check('password', 'Password is required').not().isEmpty(),
+    check('email', 'Email does not appear to be valid').isEmail()
+
+  ], passport.authenticate('jwt', { session: false }), (req, res) => {
+    Users.findOneAndUpdate(
+      { username: req.params.username },
       {
-        // Leaving any of these fields out is still valid. Existing values will remain unchanged. So if you just wanted to update the username, you may do so by only providing a username in the req.body. All other fields will be untouched. 
-        // HOWEVER, if you leave req.body blank, it will delete everything.
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email,
-        birthDate: req.body.birthDate,
-      }
-    },
-    { new: true }, // makes sure updated document is returned
+        $set:
+        {
+          // Leaving any of these fields out is still valid. Existing values will remain unchanged. So if you just wanted to update the username, you may do so by only providing a username in the req.body. All other fields will be untouched. 
+          // HOWEVER, if you leave req.body blank, it will delete everything.
+          username: req.body.username,
+          password: req.body.password,
+          email: req.body.email,
+          birthDate: req.body.birthDate,
+        }
+      },
+      { new: true }, // makes sure updated document is returned
 
-    // error handling & feedback
-  ).then((updatedUser) => {
-    res.json(updatedUser);
-  })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
+      // error handling & feedback
+    ).then((updatedUser) => {
+      res.json(updatedUser);
+    })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
 
-});
+  });
 
 // add movies to user list of favorites ----------------------------------------
 app.post('/users/:username/movies/:movieID', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -158,40 +165,56 @@ app.get('/movies/:movieName', passport.authenticate('jwt', { session: false }), 
 });
 
 // Register new user -----------------------------------------------------------
-app.post('/users', (req, res) => {
-  // hash password
-  let hashedPassword = Users.hashedPassword(req.body.Password);
+app.post('/users',
+  // Validation logic
+  [
+    check('username', 'Username is required').isLength({ min: 5 }),
+    check('username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
 
-  // check if username already exists
-  Users.findOne({ username: req.body.username })
+  ], (req, res) => {
 
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.username + ' already exists');
-      } else {
-        // create new user
-        Users.create({
-          username: req.body.username,
-          password: hashedPassword,
-          email: req.body.email,
-          birthDate: req.body.birthDate,
-        })
-          // send feedback(response) back to client - contains status and object
-          .then((user) => { res.status(201).json(user) })
-          // catch error from create command
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error in create function: ' + error);
+    // check validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    // hash password
+    let hashedPassword = Users.hashedPassword(req.body.Password);
+
+    // check if username already exists
+    Users.findOne({ username: req.body.username })
+
+      .then((user) => {
+        if (user) {
+          return res.status(400).send(req.body.username + ' already exists');
+        } else {
+          // create new user
+          Users.create({
+            username: req.body.username,
+            password: hashedPassword,
+            email: req.body.email,
+            birthDate: req.body.birthDate,
           })
-      }
-    })
-    // catch error for post command
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
+            // send feedback(response) back to client - contains status and object
+            .then((user) => { res.status(201).json(user) })
+            // catch error from create command
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error in create function: ' + error);
+            })
+        }
+      })
+      // catch error for post command
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
 
-});
+  });
 
 // Delete a user by username ---------------------------------------------------
 app.delete('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -249,7 +272,7 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-app.listen(8080, () => {
-  console.log('Your app is listening on port 8080');
-
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+  console.log('Listening on port ' + port);
 });
