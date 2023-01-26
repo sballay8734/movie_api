@@ -38,6 +38,11 @@ require('./passport');
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
+// Main url
+app.get('/', (req, res) => {
+  res.send('Welcome to my movie API!')
+});
+
 // Get all users
 app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.find()
