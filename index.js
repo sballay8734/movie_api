@@ -190,7 +190,7 @@ app.post('/users',
     }
 
     // hash password
-    let hashedPassword = Users.hashPassword(req.body.Password);
+    let hashedPassword = Users.hashPassword(req.body.password);
 
     // check if username already exists
     Users.findOne({ username: req.body.username })
