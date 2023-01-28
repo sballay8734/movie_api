@@ -46,17 +46,49 @@ app.get('/', (req, res) => {
 });
 
 // Get all users
-app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.find()
-    .then((users) => {
-      res.status(201).json(users);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
+// app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
+//   Users.find()
+//     .then((users) => {
+//       res.status(201).json(users);
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       res.status(500).send('Error: ' + err);
+//     });
 
-});
+// });
+
+// Get a user by username ------------------------------------------------------
+// app.get('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
+//   Users.findOne({ username: req.params.username })
+
+//     .then((user) => {
+//       res.json(user);
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       res.status(500).send('Error: ' + err);
+//     });
+
+// });
+
+// Delete a user by username ---------------------------------------------------
+// app.delete('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
+//   Users.findOneAndRemove(
+//     { username: req.params.username })
+
+//     .then((user) => {
+//       if (!user) {
+//         res.status(400).send(req.params.username + ' was not found.');
+//       } else {
+//         res.status(201).send(req.params.username + ' was deleted.')
+//       }
+//     }).catch((error) => {
+//       console.error(error);
+//       res.status(500).send('Error: ' + error);
+//     });
+
+// });
 
 // Get all movies --------------------------------------------------------------
 app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -69,87 +101,6 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
       console.error(err);
       res.status(500).send('Error: ' + err)
     });
-
-});
-
-// Get a user by username ------------------------------------------------------
-app.get('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOne({ username: req.params.username })
-
-    .then((user) => {
-      res.json(user);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-
-});
-
-// update user info ------------------------------------------------------------
-app.put('/users/:username',
-  [
-    check('username', 'Username is required').isLength({ min: 5 }),
-    check('username', 'Username contains non-alphanumeric characters - Not Allowed').isAlphanumeric(),
-    check('password', 'Password is required').not().isEmpty(),
-    check('email', 'Email does not appear to be valid').isEmail()
-
-  ], passport.authenticate('jwt', { session: false }), (req, res) => {
-    Users.findOneAndUpdate(
-      { username: req.params.username },
-      {
-        $set:
-        {
-          // Leaving any of these fields out is still valid. Existing values will remain unchanged. So if you just wanted to update the username, you may do so by only providing a username in the req.body. All other fields will be untouched. 
-          // HOWEVER, if you leave req.body blank, it will delete everything.
-          username: req.body.username,
-          password: req.body.password,
-          email: req.body.email,
-          birthDate: req.body.birthDate,
-        }
-      },
-      { new: true }, // makes sure updated document is returned
-
-      // error handling & feedback
-    ).then((updatedUser) => {
-      res.json(updatedUser);
-    })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).send('Error: ' + error);
-      });
-
-  });
-
-// add movies to user list of favorites ----------------------------------------
-app.post('/users/:username/movies/:movieID', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate(
-    { username: req.params.username },
-    { $addToSet: { favoriteMovies: req.params.movieID } },
-    { new: true },
-
-  ).then((updatedUser) => {
-    res.status(201).json(updatedUser);
-  }).catch((error) => {
-    console.error(error);
-    res.status(500).send('Error: ' + error);
-  });
-
-});
-
-// remove movie from user list of favorites ------------------------------------
-app.delete('/users/:username/movies/:movieID', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate(
-    { username: req.params.username },
-    { $pull: { favoriteMovies: req.params.movieID } },
-    { new: true },
-
-  ).then((updatedUser) => {
-    res.status(201).json(updatedUser);
-  }).catch((error) => {
-    console.error(error);
-    res.status(500).send('Error: ' + error);
-  });
 
 });
 
@@ -223,24 +174,6 @@ app.post('/users',
 
   });
 
-// Delete a user by username ---------------------------------------------------
-app.delete('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndRemove(
-    { username: req.params.username })
-
-    .then((user) => {
-      if (!user) {
-        res.status(400).send(req.params.username + ' was not found.');
-      } else {
-        res.status(201).send(req.params.username + ' was deleted.')
-      }
-    }).catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
-
-});
-
 // Get description of genre by name --------------------------------------------
 app.get('/movies/genres/:genreName', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne(
@@ -274,6 +207,73 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
       console.error(error);
       res.status(500).send('Error: ' + error);
     });
+
+});
+
+// update user info ------------------------------------------------------------
+app.put('/users/:username',
+  [
+    check('username', 'Username is required').isLength({ min: 5 }),
+    check('username', 'Username contains non-alphanumeric characters - Not Allowed').isAlphanumeric(),
+    check('password', 'Password is required').not().isEmpty(),
+    check('email', 'Email does not appear to be valid').isEmail()
+
+  ], passport.authenticate('jwt', { session: false }), (req, res) => {
+    Users.findOneAndUpdate(
+      { username: req.params.username },
+      {
+        $set:
+        {
+          // Leaving any of these fields out is still valid. Existing values will remain unchanged. So if you just wanted to update the username, you may do so by only providing a username in the req.body. All other fields will be untouched. 
+          // HOWEVER, if you leave req.body blank, it will delete everything.
+          username: req.body.username,
+          password: req.body.password,
+          email: req.body.email,
+          birthDate: req.body.birthDate,
+        }
+      },
+      { new: true }, // makes sure updated document is returned
+
+      // error handling & feedback
+    ).then((updatedUser) => {
+      res.json(updatedUser);
+    })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+
+  });
+
+// remove movie from user list of favorites ------------------------------------
+app.delete('/users/:username/movies/:movieID', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndUpdate(
+    { username: req.params.username },
+    { $pull: { favoriteMovies: req.params.movieID } },
+    { new: true },
+
+  ).then((updatedUser) => {
+    res.status(201).json(updatedUser);
+  }).catch((error) => {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  });
+
+});
+
+// add movies to user list of favorites ----------------------------------------
+app.post('/users/:username/movies/:movieID', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndUpdate(
+    { username: req.params.username },
+    { $addToSet: { favoriteMovies: req.params.movieID } },
+    { new: true },
+
+  ).then((updatedUser) => {
+    res.status(201).json(updatedUser);
+  }).catch((error) => {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  });
 
 });
 
