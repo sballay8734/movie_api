@@ -29,7 +29,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.8.3",
     "morgan": "^1.10.0",
-    "node": "^18.12.1",
+    "node": "^18.13.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
@@ -37,6 +37,5 @@
   },
   "devDependencies": {
     "eslint": "^8.29.0"
-  },
-  "engines": { "node": "18.12.1" }
+  }
 }
