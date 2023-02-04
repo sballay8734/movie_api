@@ -42,7 +42,8 @@ require('./passport');
 
 // Main url
 app.get('/', (req, res) => {
-  res.send('Welcome to my API!').json()
+  let message = "Welcome to my API!"
+  res.status(201).json(message)
 });
 
 // Get all users
