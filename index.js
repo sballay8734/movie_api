@@ -91,12 +91,6 @@ app.get('/', (req, res) => {
 
 // });
 
-app.get('/login', (req, res) => {
-  Users.findOne({ username: req.params.username })
-    .then((user) => alert(user));
-  }
-)
-
 // Get all movies --------------------------------------------------------------
 app.get('/movies', passport.authenticate('jwt', { session: false }),
 (req, res) => {
