@@ -74,22 +74,22 @@ app.get('/users/:username', passport.authenticate('jwt', { session: false }), (r
 });
 
 // Delete a user by username ---------------------------------------------------
-// app.delete('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
-//   Users.findOneAndRemove(
-//     { username: req.params.username })
+app.delete('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndRemove(
+    { username: req.params.username })
 
-//     .then((user) => {
-//       if (!user) {
-//         res.status(400).send(req.params.username + ' was not found.');
-//       } else {
-//         res.status(201).send(req.params.username + ' was deleted.')
-//       }
-//     }).catch((error) => {
-//       console.error(error);
-//       res.status(500).send('Error: ' + error);
-//     });
+    .then((user) => {
+      if (!user) {
+        res.status(400).send(req.params.username + ' was not found.');
+      } else {
+        res.status(201).send(req.params.username + ' was deleted.')
+      }
+    }).catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 
-// });
+});
 
 // Get all movies --------------------------------------------------------------
 app.get('/movies', passport.authenticate('jwt', { session: false }),
